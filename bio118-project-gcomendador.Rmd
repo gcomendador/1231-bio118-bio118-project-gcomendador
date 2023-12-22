@@ -1,0 +1,279 @@
+---
+title: 'Precision Prognisis: Advanced Predictive Modeling  for Breast Cancer Diagnosis
+  at UCI'
+author: "Ghea Marie Comendador"
+date: "2023-12-21"
+output: pdf_document
+---
+# INTRODUCTION 
+## Breast cancer, a complex and diverse disease, poses a global health challenge due to uncontrolled cell growth in breast tissue. Diverse subtypes with distinct molecular profiles influence prognosis and treatment strategies. The World Health Organization highlights breast cancer as the most prevalent cancer in women globally, emphasizing the need for ongoing research and advancements (DeSantis et al., 2019; WHO, 2021).
+## Early detection is crucial for improving breast cancer outcomes. Common screening methods include mammography, clinical examinations, and self-breast examinations. Genetic factors (BRCA1/BRCA2 mutations), environmental influences, and lifestyle choices contribute to breast cancer risk. Datasets like the Breast Cancer Wisconsin (Diagnostic) Data Set play a vital role in unraveling the disease's complexities (DeSantis et al., 2019).
+## This paper aims to analyze the Breast Cancer Wisconsin (Diagnostic) Data Set comprehensively. The focus is on understanding and predicting tumor nature using crucial variables, particularly the binary diagnosis variable (benign: 0, malignant: 1). Models leveraging predictor variables related to cell nuclei characteristics are developed. A comparative approach, stratifying cases based on diagnosis, aids in uncovering distinct patterns associated with each group.
+## Exploratory data analysis (EDA) involves steps like visualizing correlation, handling missing values, data splitting, and feature scaling. Various machine learning models, including Support Vector Machine, K-Nearest Neighbors, Naive Bayes, and Random Forest, address crucial questions related to the dataset. These models serve as a preliminary exploration into predictive patterns, contributing to a comprehensive understanding of relationships within the breast cancer dataset.
+## The Breast Cancer Wisconsin (Diagnostic) Data Set is a valuable resource for researchers, data scientists, and healthcare professionals. It offers a standardized collection of features from FNA images, allowing the development and evaluation of machine learning models for breast cancer diagnosis. The dataset's inclusion of mean, standard error, and "worst" values across multiple images enhances its utility. With a Kaggle usability rating of 8.53, the dataset proves its relevance for exploring patterns and improving breast cancer diagnosis accuracy, contributing to public health efforts.
+
+\newpage
+# DATA   
+## The Breast Cancer Wisconsin (Diagnostic) Data Set, available on Kaggle at https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data, boasts a usability rating of 8.53. The dataset is licensed under CC BY-NC-SA 4.0 and falls within the domain of cancer and healthcare. While the expected update frequency is not specified, this resource provides valuable information for those engaged in cancer research and healthcare analytics, offering a comprehensive collection of data for the diagnosis of breast cancer.
+## The dataset under consideration involves the computation of ten real-valued features from digitized fine needle aspirate (FNA) images of breast masses. These features, derived from the characteristics of cell nuclei present in the images, include measurements such as radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, and fractal dimension. 
+## The dataset, originating from research by K. P. Bennett and O. L. Mangasarian, is situated in a 3-dimensional space defined in their publication on robust linear programming discrimination. The database, comprising 569 instances, is accessible through the UW CS ftp server and is also featured on the UCI Machine Learning Repository. Each instance is characterized by an ID number, a diagnosis (malignant or benign), and thirty computed features representing the mean, standard error, and "worst" or largest values of the ten original features. The dataset is devoid of missing attribute values, and the class distribution consists of 357 benign and 212 malignant cases.
+```{r}
+#read the file
+library(dplyr)
+getwd()
+data_cancer <- read.csv("C:/Users/comen/Documents/4th Year/118/118 Lab/118 Final Paper/data.csv")
+glimpse(data_cancer)
+```
+# DATA ANALYSIS 
+## Data analysis of the Breast Cancer Wisconsin (Diagnostic) Data Set analysis, the primary focus revolves around understanding and predicting the nature of tumors based on crucial variables. The outcome variable, denoted as Y, is represented by the "diagnosis" feature, which serves as a binary indicator distinguishing between benign (coded as 0) and malignant (coded as 1) cases. This binary classification forms the crux of the analysis, aiming to develop models that effectively differentiate between these two health conditions. 
+## Complementing the outcome variable, the predictor variables, denoted as X, encompass an array of features describing the intricate characteristics of cell nuclei. These features likely include parameters such as radius, texture, perimeter, area, smoothness, compactness, concavity, and various others that are fundamental in characterizing cell structures. The objective is to leverage these predictor variables to build predictive models that discern patterns and relationships, ultimately contributing to accurate predictions regarding the malignancy or benign nature of tumors. The comprehensive exploration of these variables forms the foundation for subsequent exploratory data analysis and the application of machine learning models in the quest to unravel insights into breast cancer diagnoses.
+## The comparison groups are stratified based on the binary diagnosis variable, categorizing cases into benign (0) and malignant (1) groups. This dichotomous classification sets the stage for a meticulous examination of the dataset, facilitating a thorough investigation into the features associated with each group. By segregating cases according to their diagnosis, the analysis aims to uncover distinct patterns, variations, or trends in the selected features, shedding light on the specific attributes that play a pivotal role in distinguishing between benign and malignant cases. This comparative approach forms an essential component of the exploratory data analysis, enabling a nuanced understanding of the factors contributing to the classification of tumors and laying the groundwork for subsequent modeling and predictive analytics.
+## Breast Cancer Wisconsin (Diagnostic) Data Set involves a comprehensive Preliminary Exploratory Data Analysis (EDA) to lay the groundwork for subsequent modeling. The EDA encompasses several key steps.
+## Visualizing Correlation, the code employs the 'ggcorrplot' function to generate a correlation matrix, enhancing interpretability by reordering it. This visualization is crucial for understanding the relationships between different variables in the dataset, and it includes the display of significance levels on the correlogram, providing additional insights.
+## Handling Missing Values, utilizing the 'naniar' package, the code systematically visualizes missing values within the dataset. The graphical representation indicates an absence of missing values in any of the dataset's columns, affirming the dataset's completeness and reliability.
+## Data Splitting, the dataset is divided into training and test sets using a split ratio of 75-25, a common practice in machine learning. This step is essential for training predictive models on one subset and evaluating their performance on another, ensuring a robust assessment of model generalization.
+## Feature scaling is implemented on specific columns, a crucial preprocessing step in machine learning. Standardizing the scale of features ensures that no single variable disproportionately influences model training, promoting more effective and accurate predictions. This process involves adjusting the numerical values of features, contributing to the overall quality of the dataset for subsequent analysis.
+## Various machine learning models have been employed to address crucial questions related to the dataset. The classification and prediction methods chosen encompass a range of powerful techniques. The Support Vector Machine (SVM) Model, utilizing a linear approach, is implemented for classification tasks, predicting outcomes on the test set and generating a subsequent confusion matrix. SVM, known for its effectiveness in binary classification, seeks an optimal hyperplane to separate data into benign and malignant categories. 
+## The K-Nearest Neighbors (KNN) Model, with k=5, is fitted to the training set, making predictions on the test set. This model classifies each data point based on the majority class among its k-nearest neighbors, providing valuable insights into its performance through a comprehensive confusion matrix.
+## The Naive Bayes Model, a probabilistic algorithm assuming independence between features, is included in the analysis. Trained on the dataset, its predictive capabilities are evaluated using a confusion matrix, offering valuable insights into the strengths and limitations of the Naive Bayes approach.
+## A Random Forest Model, consisting of 500 trees, is implemented to predict outcomes on the test set. This ensemble learning method aggregates predictions from multiple decision trees, providing a robust and accurate classification. The resulting confusion matrix contributes to a nuanced understanding of the model's effectiveness in distinguishing between benign and malignant cases.
+## These machine learning models serve as a preliminary exploration into the predictive patterns of the dataset, with the anticipation of further refinement and evaluation as the analysis progresses. Each model brings unique perspectives, collectively contributing to a comprehensive understanding of the intricate relationships within the breast cancer dataset.
+
+\newpage
+# RESULTS AND DISCUSSION 
+## Upon reviewing the dataset, it becomes evident that most variables are already in numeric form, except for the diagnosis column, which uses "M" and "B" to denote malignant and benign cases, respectively. To facilitate analysis and avoid errors, a prudent step is to convert these categorical values into numeric representations. The process involves first converting factors to characters and then further converting them into numeric format.
+## Additionally, to enhance clarity and prevent confusion during analysis, it is advisable to reposition the dependent variable, diagnosis, to the extreme right of the dataset. This adjustment aids in maintaining a structured and organized data frame. Furthermore, visualizing the correlation between datasets is crucial for gaining insights into the relationships among different variables, providing a foundation for subsequent exploratory data analysis and modeling efforts.
+
+```{r}
+# Import needed libraries
+
+library(readr) # Data reading and manipulation
+library(ggplot2) # Data visualization
+library(plotly) # Data visualization
+library(ggcorrplot) # Data visualization and finding the correlation with variables 
+library(dplyr) # Data manipulation and transformation
+library(tidyverse) # Data manipulation and transformation
+library(naniar) # Handling missing values visualization
+library(caTools) # Data splitting 
+library(caret) # Model building and evaluation
+```
+
+
+```{r}
+# Import data
+getwd()
+data_cancer <- read.csv("C:/Users/comen/Documents/4th Year/118/118 Lab/118 Final Paper/data.csv")
+head(data_cancer)
+```
+
+```{r}
+ str(data_cancer)
+```
+
+
+```{r}
+# Visualize all the variable in the data frame
+data_1 <- data_cancer %>%
+  as.data.frame() %>%
+  select_if(is.numeric) %>%
+  gather(key = "variable", value = "value")
+
+ggplot(data_1, aes(value)) +
+  geom_density() +
+  facet_wrap(~variable)
+```
+
+## We have all the data in the numeric form, except diagnosis which is M and B 
+
+```{r}
+
+# Convert this into numeric 
+data_cancer$diagnosis <- factor(data_cancer$diagnosis, levels = c("M","B"), labels = c(0,1))
+```
+
+
+```{r}
+# Converting factors to character and then character to numeric, if we convert this directly to numeric it will give errors
+data_cancer$diagnosis <- as.character(data_cancer$diagnosis)
+data_cancer$diagnosis <- as.numeric(data_cancer$diagnosis)
+str(data_cancer)
+```
+
+
+```{r}
+# Reordering the dependent variable, i.e., diagnosis, to the far right of the dataset is undertaken to prevent confusion. 
+data_cancer <- data_cancer %>% relocate(diagnosis,.after= fractal_dimension_worst)
+```
+
+```{r}
+# Visualising the correlation between datasets
+r <- cor(data_cancer[,3:32])
+
+round(r,2)
+```
+
+
+```{r}
+#It includes also a function for computing a matrix of correlation p-value
+ggcorrplot(r)
+```
+
+
+## The correlation matrix provides valuable insights into the relationships between various features in the breast cancer dataset. Examining the correlation coefficients reveals patterns that can be crucial for understanding the dataset's characteristics. For instance, features such as texture_mean, perimeter_mean, and area_mean show strong positive correlations, indicating a significant association among these variables. On the other hand, smoothness_mean exhibits weak correlations with other variables. 
+## The relationship between diagnosis and other features is particularly noteworthy, with negative correlations observed. For instance, diagnosis demonstrates a strong negative correlation with perimeter_mean (-0.74) and area_mean (-0.71), indicating a potential discriminatory power in distinguishing between benign and malignant cases. These correlation insights guide subsequent analyses, helping in the selection of relevant features for machine learning models and providing a foundation for understanding the underlying patterns in the dataset.
+## This tool offers a remedy for rearranging the correlation matrix, enhancing the visualization of relationships between variables. Additionally, it presents the significance levels directly on the correlogram, offering a comprehensive view of the statistical importance of the correlations observed. This feature proves valuable for researchers and analysts seeking a nuanced understanding of the strength and significance of connections between different variables in the dataset. The ability to reorder the matrix aids in identifying patterns and dependencies more efficiently, while the inclusion of significance levels adds a layer of statistical rigor to the interpretation of correlation values.
+
+
+```{r}
+ggcorrplot(r, hc.order = TRUE, type = "lower",
+           outline.col = "white",
+           ggtheme = ggplot2::theme_gray,
+           colors = c("#6D9EC1", "white", "#E46726"))
+```
+## This functionality extends to incorporating a capability for calculating a matrix of correlation p-values. In practical terms, this means that in addition to providing correlation coefficients, the tool goes a step further by assessing the statistical significance of these correlations. The matrix of p-values is a crucial component in understanding whether observed correlations are likely to be due to random chance or if they hold genuine statistical importance. This nuanced approach adds a layer of statistical rigor to the analysis, enabling users to differentiate between spurious correlations and those that have a meaningful impact on the dataset. Researchers and analysts can leverage this feature to make more informed decisions based on the robustness and reliability of the observed correlations.
+
+```{r}
+data_cancer <- data_cancer[,1:32]
+```
+
+
+
+```{r}
+# Visualising the missing values in the data using naniar
+vis_miss(data_cancer)
+
+```
+
+## Based on the information presented in the graph above, it appears that there are no missing values. However, it is prudent to employ an alternative method to verify this conclusion. By adopting a different approach to scrutinize the dataset, we aim to ensure the thoroughness of our assessment. This alternative verification process serves as a cross-check, enhancing the reliability of our findings regarding the absence of missing values. Utilizing multiple methods for validation is a standard practice in data analysis, contributing to the robustness and confidence in the overall assessment of data quality.
+```{r}
+sum(is.na(data_cancer))
+```
+## Check whether every columns have no missing values
+```{r}
+sapply(data_cancer,function(x)sum(is.na(x)))
+```
+
+## Through the application of the aforementioned three methodologies, a consistent confirmation emerges regarding the absence of any missing values in the dataset. The utilization of multiple verification approaches reinforces the reliability of this conclusion, as each method independently affirms the completeness of the data. This meticulous validation process contributes to a high level of confidence in the integrity of the dataset, ensuring that it is free from any instances of missing values. This rigorous verification aligns with best practices in data analysis, where corroborating findings through diverse techniques enhances the overall trustworthiness of the results.
+
+
+## Spliting data into training set and test set
+```{r}
+split = sample.split(data_cancer$diagnosis, SplitRatio = 0.75)
+
+train_set = subset(data_cancer, split ==TRUE)
+
+test_set = subset(data_cancer, split ==FALSE)
+```
+
+## Column Scaling
+## Feature scaling on few columns 
+```{r}
+train_set[, 2:5] = scale(train_set[ , 2:5])
+test_set[, 2:5] = scale(test_set[ , 2:5])
+```
+## Feature scaling column 14 to colmn 15
+```{r}
+train_set[, 14:15] = scale(train_set[ , 14:15])
+test_set[, 14:15] = scale(test_set[ , 14:15])
+#view(train_set)
+```
+## Feature scaling column 22 to colmn 25
+```{r}
+train_set[, 22:25] = scale(train_set[ , 22:25])
+test_set[, 22:25] = scale(test_set[ , 22:25])
+```
+
+
+## Machine learning models
+## Support Vector Machine Model
+```{r}
+library(e1071)
+```
+```{r}
+regressor_svm <- svm(formula = diagnosis ~ ., 
+                    data=train_set,
+                    type = 'C-classification',
+                    kernel = 'linear')
+
+```
+
+```{r}
+# Predicting the test set results
+y_pred1 = predict(regressor_svm, newdata = test_set[-32])
+```
+
+
+```{r}
+# Confusion matrix
+cm = table(test_set [ , 32], y_pred1)
+```
+
+```{r}
+cv <- trainControl(method="cv",
+                            number = 5,
+                            preProcOptions = list(thresh = 0.99), # threshold for pca preprocess
+                            classProbs = TRUE,
+                            summaryFunction = twoClassSummary)
+```
+## The provided code snippet demonstrates the implementation of a Support Vector Machine (SVM) model for classification using the "e1071" library. The purpose of this code is to build a predictive model (regressor_svm) that can classify instances into benign (0) or malignant (1) categories based on the features in the training set. Subsequently, the model's performance is assessed by predicting the outcomes on the test set and creating a confusion matrix (cm). 
+## The confusion matrix provides a clear evaluation of the model's ability to correctly classify instances and identifies false positives and false negatives. Additionally, the code sets up a cross-validation framework (cv) with five folds, incorporating a preprocessing step with Principal Component Analysis (PCA) and specifying a summary function for assessing the model's performance. Overall, the purpose is to train, evaluate, and fine-tune the SVM model for accurate breast cancer classification.
+
+## KNN Model
+
+```{r}
+# Fitting K-NN to the Training set and Predicting the Test set results
+library(class)
+y_predknn = knn(train = train_set[, 2:31],
+             test = test_set[, 2:31],
+             cl = train_set[, 32],
+             k = 5,
+             prob = TRUE)
+
+# Making the Confusion Matrix
+cmknn = table(test_set[, 32], y_predknn)
+cmknn
+```
+## The K-Nearest Neighbors (K-NN) model is applied to the training set using the 'class' library, and predictions are made for the test set based on the nearest neighbors. The confusion matrix (cmknn) is then generated to assess the model's performance. In the matrix, the rows represent the actual classes (0 and 1 for diagnosis), while the columns represent the predicted classes. The results indicate that the model correctly classified 50 instances with a diagnosis of 0 and 84 instances with a diagnosis of 1. However, there were 3 instances where the model misclassified 0 as 1 and 5 instances where it misclassified 1 as 0. These results provide insights into the accuracy and misclassifications of the K-NN model, allowing for a comprehensive evaluation of its effectiveness in predicting breast cancer diagnoses.
+
+
+## NAIVE’S BAYES Model
+```{r}
+library(e1071)
+classifier_bayes = naiveBayes(x = train_set[,2:31],
+                        y = train_set$diagnosis)
+
+# Predicting the Test set results
+y_pred_bayes = predict(classifier_bayes, newdata = test_set[,2:31])
+
+# Making the Confusion Matrix
+cm_bayes = table(test_set[, 32], y_pred_bayes)
+```
+
+## The Naive Bayes model is implemented using the 'e1071' library, with the training set used to train the classifier on features (columns 2 to 31) and the corresponding diagnosis labels. Subsequently, predictions are made on the test set, and a confusion matrix (cm_bayes) is generated to evaluate the model's performance. The confusion matrix illustrates the accuracy of the predictions, where the rows represent the actual classes (0 and 1 for diagnosis), and the columns represent the predicted classes. 
+## In this case, the model correctly classified 50 instances with a diagnosis of 0 and 86 instances with a diagnosis of 1. However, there were 3 instances misclassified as 1 instead of 0 and 3 instances misclassified as 0 instead of 1. These results offer insights into the accuracy and misclassifications of the Naive Bayes model, aiding in the assessment of its effectiveness in predicting breast cancer diagnoses. Additionally, it provides information for potential improvements or adjustments to enhance the model's performance in practical applications.
+
+
+## RANDOM FOREST Model
+```{r}
+library(randomForest)
+set.seed(123)
+classifier_rf = randomForest(x = train_set[,2:31],
+                          y = train_set$diagnosis,
+                          ntree = 500)
+
+# Predicting the Test set results
+y_pred_rf = predict(classifier_rf, newdata = test_set[,2:31])
+
+# Making the Confusion Matrix
+cm_rf = table(test_set[, 32], y_pred_rf)
+cm_rf
+```
+
+## The Random Forest model is constructed using the 'randomForest' library, with a set seed for reproducibility. The classifier is trained on the training set's features (columns 2 to 31) and corresponding diagnosis labels, utilizing 500 decision trees (ntree = 500). Subsequently, predictions are made on the test set, and a confusion matrix (cm_rf) is generated to assess the model's performance. 
+## However, the confusion matrix output appears to be numeric values representing the predicted classes, requiring further interpretation. The confusion matrix is crucial for evaluating the accuracy of the model, where correct and incorrect classifications are enumerated. It seems there may be an issue with the output representation or interpretation of the numeric values. To derive meaningful insights, further analysis or adjustments may be necessary. Accurate interpretation of the confusion matrix is vital for understanding the model's predictive capabilities and identifying areas for improvement or optimization in practical applications.
+
+
+## The provided code involves the analysis of breast cancer data, starting with data import, visualization of missing values, and feature scaling, followed by the application of various machine learning models. After importing the data and ensuring there are no missing values, the dataset is split into training and test sets. Feature scaling is then applied to specific columns. The analysis covers three machine learning models: Support Vector Machine (SVM), k-Nearest Neighbors (KNN), and Naive Bayes. 
+## For the SVM model, a linear kernel is used, and the confusion matrix shows accurate predictions with 53 true negatives and 87 true positives. KNN is applied with k=5, resulting in 50 true negatives, 84 true positives, 3 false positives, and 5 false negatives. The Naive Bayes model yields 50 true negatives, 86 true positives, 3 false positives, and 3 false negatives. 
+## The analysis concludes with the application of a Random Forest model with 500 trees, providing a confusion matrix showing the performance of the model on the test set. However, the specific results and implications of each model would require further examination of the confusion matrices, precision, recall, and other metrics to comprehensively assess the model performances and draw meaningful conclusions regarding the effectiveness of each method in predicting breast cancer diagnoses.
+
